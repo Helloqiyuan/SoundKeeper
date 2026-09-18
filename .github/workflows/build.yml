@@ -24,29 +24,22 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Setup .NET
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@v5
         with:
-          # 项目目标框架为 net10.0-windows；预览/正式 SDK 均可用时优先正式
           dotnet-version: |
             10.0.x
 
       - name: Restore dependencies
         run: dotnet restore -r win-x64
 
+      # TreatWarningsAsErrors：把警告当成错误，防止代码质量退化
       - name: Build
-        run: dotnet build -c ${{ matrix.configuration }} -r win-x64 --no-restore
-
-      - name: Verify no warnings treated as errors
-        shell: pwsh
-        run: |
-          $output = dotnet build -c ${{ matrix.configuration }} -r win-x64 --no-restore 2>&1 | Out-String
-          Write-Host $output
-          if ($output -match '警告|warning') {
-            Write-Host "::warning::Build produced warnings; please review them."
-          }
+        run: >
+          dotnet build -c ${{ matrix.configuration }} -r win-x64 --no-restore
+          -p:TreatWarningsAsErrors=true
 
   publish:
     name: Publish single-file exe
@@ -56,10 +49,10 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Setup .NET
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@v5
         with:
           dotnet-version: |
             10.0.x
