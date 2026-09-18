@@ -58,7 +58,7 @@ SoundKeeper 的做法是**在程序内实时生成严格非零的极小样本**�
 
 ## 快速开始
 
-1. 从 [Releases](https://github.com/qiyuan/SoundKeeper/releases) 下载 `SoundKeeper.exe`。
+1. 从 [Releases](https://github.com/Helloqiyuan/SoundKeeper/releases) 下载 `SoundKeeper.exe`。
 2. 双击运行。系统托盘区会出现一个**灰色圆点**图标（当前为已停止状态）。
 3. **右键**该图标：
 

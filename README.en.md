@@ -68,7 +68,7 @@ alive, and the headphone's sleep timer is continuously reset.
 
 ## Quick Start
 
-1. Download `SoundKeeper.exe` from [Releases](https://github.com/qiyuan/SoundKeeper/releases).
+1. Download `SoundKeeper.exe` from [Releases](https://github.com/Helloqiyuan/SoundKeeper/releases).
 2. Double-click it. A **grey dot** icon appears in the system tray (stopped state).
 3. **Right-click** the icon:
 

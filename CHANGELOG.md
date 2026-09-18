@@ -22,4 +22,4 @@
 - `--selftest` 自检模式，验证音频链路与注册表读写
 - `--silent` 静默启动参数，供开机自启使用
 
-[1.0.0]: https://github.com/qiyuan/SoundKeeper/releases/tag/v1.0.0
+[1.0.0]: https://github.com/Helloqiyuan/SoundKeeper/releases/tag/v1.0.0
