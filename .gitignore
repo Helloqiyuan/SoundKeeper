@@ -1,0 +1,57 @@
+# ===== 构建产物 =====
+bin/
+obj/
+publish/
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+build/
+bld/
+[Oo]ut/
+
+# ===== Visual Studio / Rider / VS Code =====
+.vs/
+.vscode/
+.idea/
+*.user
+*.suo
+*.userprefs
+*.userosscache
+*.sln.docstates
+*.rsuser
+
+# ===== 发布产物（单文件 exe 约 100MB，超出 GitHub 单文件限制，不应入库）=====
+SoundKeeper.exe
+*.pdb
+
+# ===== NuGet =====
+*.nupkg
+*.snupkg
+packages/
+!packages/build/
+
+# ===== 自检与运行日志 =====
+selftest.log
+*.log
+
+# ===== MSBuild =====
+*.binlog
+*.tlog
+*.log
+
+# ===== 操作系统 =====
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+.DS_Store
+
+# ===== AI 助手本地工作目录 =====
+.workbuddy-ai/
+
+# ===== 临时文件 =====
+*.tmp
+*.bak
+*.swp
+*~

@@ -1,0 +1,34 @@
+# 默认按文本处理，自动识别并统一换行符
+* text=auto
+
+# 源代码：统一使用 LF
+*.cs      text eol=lf
+*.csproj  text eol=crlf
+*.sln     text eol=crlf
+*.manifest text eol=crlf
+
+# 配置文件
+*.json  text eol=lf
+*.xml   text eol=lf
+*.config text eol=lf
+*.yml   text eol=lf
+*.yaml  text eol=lf
+*.md    text eol=lf
+
+# 脚本
+*.sh    text eol=lf
+*.cmd   text eol=crlf
+*.bat   text eol=crlf
+*.ps1   text eol=crlf
+
+# Windows 专用资源，禁止自动转换
+*.ico   binary
+*.png   binary
+*.jpg   binary
+*.gif   binary
+*.exe   binary
+*.dll   binary
+
+# 语言统计：将项目归类为 C#，避免被识别为其他语言
+*.cs      linguist-language=C#
+*.csproj  linguist-language=XML
