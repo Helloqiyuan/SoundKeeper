@@ -42,7 +42,7 @@ jobs:
           -p:TreatWarningsAsErrors=true
 
   publish:
-    name: Publish single-file exe
+    name: Publish release artifacts
     runs-on: windows-latest
     needs: build
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
@@ -60,15 +60,30 @@ jobs:
       - name: Restore dependencies
         run: dotnet restore -r win-x64
 
-      - name: Publish
+      # 自包含 + 压缩：约 47MB，零依赖，开箱即用
+      # 压缩属性在 csproj 中按 SelfContained 条件启用
+      - name: Publish (self-contained, compressed)
         run: >
-          dotnet publish -c Release -r win-x64 --self-contained
+          dotnet publish -c Release -r win-x64 --self-contained true
           -p:PublishSingleFile=true --no-restore
-          -o publish
+          -o publish/full
 
-      - name: Upload artifact
+      # 框架依赖：约 0.7MB，需用户已安装 .NET 10 桌面运行时
+      - name: Publish (framework-dependent lite)
+        run: >
+          dotnet publish -c Release -r win-x64 --self-contained false
+          -p:PublishSingleFile=true --no-restore
+          -o publish/lite
+
+      - name: Rename lite artifact
+        shell: pwsh
+        run: Rename-Item -Path publish/lite/SoundKeeper.exe -NewName SoundKeeper-lite.exe
+
+      - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
           name: SoundKeeper-win-x64
-          path: publish/SoundKeeper.exe
+          path: |
+            publish/full/SoundKeeper.exe
+            publish/lite/SoundKeeper-lite.exe
           if-no-files-found: error

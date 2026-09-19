@@ -19,6 +19,7 @@ English | [简体中文](README.md)
 
 - [The Problem](#the-problem)
 - [Features](#features)
+- [Which Version to Download](#which-version-to-download)
 - [Quick Start](#quick-start)
 - [How It Works](#how-it-works)
 - [Requirements](#requirements)
@@ -65,6 +66,25 @@ alive, and the headphone's sleep timer is continuously reset.
   (green = running / grey = stopped), no image files needed
 - 🔍 **Built-in self-test** — `--selftest` verifies the audio pipeline and registry I/O
 - 📦 **Single-file release** — self-contained exe; no .NET runtime required on the target machine
+
+## Which Version to Download
+
+The [Releases](https://github.com/Helloqiyuan/SoundKeeper/releases) page offers two builds — pick one:
+
+| File | Size | When to use |
+| --- | --- | --- |
+| **`SoundKeeper.exe`** | ~47 MB | **Recommended.** Self-contained single file; no installation required, just double-click |
+| **`SoundKeeper-lite.exe`** | ~0.7 MB | For users who **already have the .NET 10 Desktop Runtime** installed |
+
+> ⚠️ **`SoundKeeper-lite.exe` has a prerequisite**: it requires the
+> [.NET 10 Desktop Runtime](https://dotnet.microsoft.com/download/dotnet/10.0)
+> (choose **.NET Desktop Runtime** → Windows x64). If you don't have it installed,
+> double-clicking will fail. **If unsure, pick `SoundKeeper.exe` above.**
+>
+> Note: Windows does **not** ship with .NET 10. The built-in .NET Framework 4.8 is a
+> different, older runtime and cannot run this app.
+
+Both builds are functionally identical — they differ only in packaging.
 
 ## Quick Start
 
@@ -128,7 +148,8 @@ WASAPI inserting a resampling layer that could break the stream.
 | Item | Requirement |
 | --- | --- |
 | OS | Windows 10 / 11 (x64) |
-| Runtime | **Not required** (release is a self-contained single file) |
+| Runtime (`SoundKeeper.exe`) | **Not required** (self-contained single file) |
+| Runtime (`SoundKeeper-lite.exe`) | Requires the [.NET 10 Desktop Runtime](https://dotnet.microsoft.com/download/dotnet/10.0) |
 | Privileges | Standard user, **no administrator rights needed** |
 | Dependency | [NAudio](https://github.com/naudio/NAudio) 2.2.1 (bundled) |
 
@@ -143,11 +164,19 @@ dotnet restore -r win-x64
 # Run in debug
 dotnet run
 
-# Publish as a self-contained single file
-dotnet publish -c Release -r win-x64 --self-contained -p:PublishSingleFile=true
+# Publish self-contained, compressed (~47MB, no runtime needed)
+dotnet publish -c Release -r win-x64 --self-contained true \
+  -p:PublishSingleFile=true -o publish-full
+
+# Publish framework-dependent lite (~0.7MB, needs .NET 10 Desktop Runtime)
+dotnet publish -c Release -r win-x64 --self-contained false \
+  -p:PublishSingleFile=true -o publish-lite
 ```
 
-Output: `bin\Release\net10.0-windows\win-x64\publish\SoundKeeper.exe`
+> Compression is controlled by `EnableCompressionInSingleFile` in `SoundKeeper.csproj`,
+> gated on a `SelfContained` condition — the option is **only supported for self-contained
+> publishing** and fails with `NETSDK1176` otherwise. It shrinks the bundle from ~103MB to
+> ~47MB, at the cost of ~0.6s extra cold-start time for decompression.
 
 ### Command-line arguments
 

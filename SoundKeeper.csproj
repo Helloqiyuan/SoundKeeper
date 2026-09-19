@@ -15,6 +15,11 @@
     <Description>Keeps Bluetooth audio devices awake by continuously playing an inaudible audio stream.</Description>
     <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
     <EnableWindowsTargeting>true</EnableWindowsTargeting>
+    <!-- 单文件发布时压缩内嵌程序集，显著减小体积（约 103MB → 约 47MB）。
+         注意：压缩仅支持自包含（self-contained）发布，框架依赖模式下会报
+         NETSDK1176，因此这里必须加 SelfContained 条件。
+         代价：启动时需将程序集解压到内存，冷启动略慢。 -->
+    <EnableCompressionInSingleFile Condition="'$(SelfContained)' == 'true'">true</EnableCompressionInSingleFile>
   </PropertyGroup>
 
   <ItemGroup>

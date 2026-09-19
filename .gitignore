@@ -21,9 +21,14 @@ bld/
 *.sln.docstates
 *.rsuser
 
-# ===== 发布产物（单文件 exe 约 100MB，超出 GitHub 单文件限制，不应入库）=====
+# ===== 发布产物（单文件 exe 体积大，超出 GitHub 单文件限制，不应入库）=====
 SoundKeeper.exe
+SoundKeeper-lite.exe
 *.pdb
+publish/
+publish-full/
+publish-lite/
+publish-out/
 
 # ===== NuGet =====
 *.nupkg

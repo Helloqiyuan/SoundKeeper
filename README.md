@@ -18,6 +18,7 @@
 
 - [解决的问题](#解决的问题)
 - [功能特性](#功能特性)
+- [下载哪个版本](#下载哪个版本)
 - [快速开始](#快速开始)
 - [工作原理](#工作原理)
 - [系统要求](#系统要求)
@@ -55,6 +56,23 @@ SoundKeeper 的做法是**在程序内实时生成严格非零的极小样本**�
 - 🎨 **零资源依赖**：托盘图标由代码绘制（绿=运行中 / 灰=已停止），无需外部图片文件
 - 🔍 **内置自检**：`--selftest` 一键验证音频链路与注册表读写
 - 📦 **单文件发布**：自包含 exe，目标机器无需安装 .NET 运行时
+
+## 下载哪个版本
+
+[Releases](https://github.com/Helloqiyuan/SoundKeeper/releases) 页面提供两个版本，按你的情况选一个：
+
+| 文件 | 大小 | 适用场景 |
+| --- | --- | --- |
+| **`SoundKeeper.exe`** | 约 47 MB | **推荐**。自包含单文件，不需要安装任何东西，下载后双击即用 |
+| **`SoundKeeper-lite.exe`** | 约 0.7 MB | 适合**已经装过 .NET 10 桌面运行时**的用户 |
+
+> ⚠️ **`SoundKeeper-lite.exe` 有前置依赖**：它需要 [.NET 10 桌面运行时](https://dotnet.microsoft.com/download/dotnet/10.0)
+> （选 **.NET Desktop Runtime** → Windows x64）。如果你的电脑没装，双击会报错。
+> 不确定的话，**直接选上面的 `SoundKeeper.exe`**。
+>
+> 注意：Windows 系统**不自带** .NET 10。系统内置的 .NET Framework 4.8 是另一回事，无法运行本程序。
+
+两个版本功能完全相同，只是打包方式不同。
 
 ## 快速开始
 
@@ -110,7 +128,8 @@ var format = WaveFormat.CreateIeeeFloatWaveFormat(mixFormat.SampleRate, mixForma
 | 项目 | 要求 |
 | --- | --- |
 | 操作系统 | Windows 10 / 11 (x64) |
-| 运行时 | **无需安装**（发布版为自包含单文件） |
+| 运行时（`SoundKeeper.exe`） | **无需安装**（自包含单文件） |
+| 运行时（`SoundKeeper-lite.exe`） | 需 [.NET 10 桌面运行时](https://dotnet.microsoft.com/download/dotnet/10.0) |
 | 权限 | 普通用户即可，**不需要管理员权限** |
 | 依赖 | [NAudio](https://github.com/naudio/NAudio) 2.2.1（已内嵌） |
 
@@ -125,11 +144,19 @@ dotnet restore -r win-x64
 # 调试运行
 dotnet run
 
-# 发布单文件（自包含，脱离 .NET 环境也能运行）
-dotnet publish -c Release -r win-x64 --self-contained -p:PublishSingleFile=true
+# 发布自包含压缩版（约 47MB，脱离 .NET 环境也能运行）
+dotnet publish -c Release -r win-x64 --self-contained true \
+  -p:PublishSingleFile=true -o publish-full
+
+# 发布框架依赖精简版（约 0.7MB，需目标机器装 .NET 10 桌面运行时）
+dotnet publish -c Release -r win-x64 --self-contained false \
+  -p:PublishSingleFile=true -o publish-lite
 ```
 
-产物路径：`bin\Release\net10.0-windows\win-x64\publish\SoundKeeper.exe`
+> 压缩由 `SoundKeeper.csproj` 中的 `EnableCompressionInSingleFile` 控制，
+> 它带有 `SelfContained` 条件 —— 因为该选项**只支持自包含发布**，
+> 用在框架依赖模式下会报 `NETSDK1176`。压缩可使体积从约 103MB 降到约 47MB，
+> 代价是启动时需解压程序集，冷启动增加约 0.6 秒。
 
 ### 命令行参数
 

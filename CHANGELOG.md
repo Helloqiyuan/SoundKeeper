@@ -22,4 +22,17 @@
 - `--selftest` 自检模式，验证音频链路与注册表读写
 - `--silent` 静默启动参数，供开机自启使用
 
+### 发布产物
+
+Release 提供两个版本，功能完全相同，仅打包方式不同：
+
+- **`SoundKeeper.exe`** — 自包含单文件，约 47 MB，无需安装任何运行时。
+  通过 `EnableCompressionInSingleFile` 压缩，体积较未压缩的约 103 MB 减少一半以上；
+  代价是启动时需解压程序集，冷启动增加约 0.6 秒
+- **`SoundKeeper-lite.exe`** — 框架依赖版本，约 0.7 MB，
+  需目标机器已安装 .NET 10 桌面运行时
+
+> 压缩选项**仅支持自包含发布**，用于框架依赖模式会报 `NETSDK1176`，
+> 因此 csproj 中该属性带有 `SelfContained` 条件。
+
 [1.0.0]: https://github.com/Helloqiyuan/SoundKeeper/releases/tag/v1.0.0
